@@ -5,6 +5,11 @@ const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
 
 const api = axios.create({
     baseURL: API_URL,
+    headers: {
+        'Cache-Control': 'no-cache',
+        'Pragma': 'no-cache',
+        'Expires': '0',
+    }
 });
 
 // Add token to requests
@@ -16,6 +21,15 @@ api.interceptors.request.use((config) => {
     } else {
         console.warn('No token found for request:', config.method.toUpperCase(), config.url);
     }
+    
+    // Add timestamp to prevent caching
+    if (config.method === 'get') {
+        config.params = {
+            ...config.params,
+            _t: new Date().getTime()
+        };
+    }
+    
     return config;
 });
 
