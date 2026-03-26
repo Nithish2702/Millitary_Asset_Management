@@ -12,6 +12,7 @@ const Dashboard = () => {
 
     useEffect(() => {
         fetchAssets();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [filters]);
 
     const fetchAssets = async () => {
